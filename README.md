@@ -1,0 +1,1 @@
+# Sparse Alignment Enhanced Latent Diffusion Transformer for Zero-Shot Speech Synthesis

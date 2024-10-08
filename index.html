@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Sparse Alignment Enhanced Latent Diffusion Transformer for Zero-Shot Speech Synthesis">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sparse Alignment Enhanced Latent Diffusion Transformer for Zero-Shot Speech Synthesis</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body" style="padding-bottom: 24px;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Sparse Alignment Enhanced Latent Diffusion Transformer for Zero-Shot Speech Synthesis</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              [<a href="#">Anonymous authors</a></span>]
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Paper under double-blind review</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="section teaser" style="padding-top: 0px;">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            While recent zero-shot text-to-speech (TTS) models have significantly improved speech quality and expressiveness, 
+            mainstream systems still suffer from issues related to speech-text alignment modeling: 1) autoregressive large language models are inefficient and not robust in long-sentence inference; 2) non-autoregressive diffusion models without explicit speech-text alignment require substantial model capacity for alignment learning; 3) predefined alignment-based diffusion models suffer from limited expressiveness and a complicated inference pipeline. This paper introduces \textit{S-DiT}, a TTS system featuring an innovative sparse alignment algorithm that guides the latent diffusion transformer (DiT). Specifically, 1) we provide sparse alignment boundaries to S-DiT to reduce the difficulty of alignment learning without limiting the model's expressiveness; 2) to simplify the overall pipeline, we propose a unified frontend language model (F-LM) training framework to cover various speech processing tasks required by TTS models. Additionally, we adopt the piecewise rectified flow technique to accelerate the generation process and employ a multi-condition classifier-free guidance strategy for accent intensity adjustment. Experiments demonstrate that S-DiT matches state-of-the-art zero-shot TTS speech quality while maintaining a more efficient pipeline. Moreover, our system can generate high-quality one-minute speech with only 8 sampling steps. Audio samples can be found in this demo page.
+          </p>
+        </div>
+
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+  </div>
+</section>
+
+
+
+<section class="hero teaser">
+  <div class="container is-max-desktop is-centered has-text-centered">
+    <div class="hero-body">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Model Overview</h2>
+          <img src="./static/images/Main_Arch.png"
+                    class="interpolation-image"/>
+          <p>(a) The speech compression model. (b) Overview of S-DiT. We insert the sparse alignment anchors into the latent vector sequence to provide coarse alignment information. The transformer blocks in S-DiT will automatically build fine-grained alignment paths.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Zero-Shot TTS</h2>
+          <div class="content">
+            <p>
+              † denotes the results are obtained from the authors.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="columns is-centered has-text-centered" style="overflow-x: auto; text-align: center; ">
+      <table class="table is-four-fifths" style="background-color: transparent;">
+        <thead>
+            <tr>
+                <th>Model</th>
+                <th>SIM-O↑</th>
+                <th>SIM-R↑</th>
+                <th>WER↓</th>
+                <th>CMOS↑</th>
+                <th>SMOS↑</th>
+                <th>RTF↓</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>GT</td>
+                <td>0.68</td>
+                <td>-</td>
+                <td>1.94%</td>
+                <td>+0.12</td>
+                <td>3.92</td>
+                <td>-</td>
+            </tr>
+            <tr>
+              <td>NaturalSpeech 3†</td>
+              <td><strong>0.67</strong></td>
+              <td><strong>0.76</strong></td>
+              <td><strong>1.81%</strong></td>
+              <td><strong>-0.10</strong></td>
+              <td><strong>3.95</strong></td>
+              <td>0.296</td>
+            </tr>
+            <tr>
+                <td>VoiceBox†</td>
+                <td style="text-decoration: underline;">0.64</td>
+                <td style="text-decoration: underline;">0.67</td>
+                <td style="text-decoration: underline;">2.03%</td>
+                <td>-0.20</td>
+                <td>3.81</td>
+                <td>0.340</td>
+            </tr>
+            <tr>
+              <td>CosyVoice</td>
+              <td>0.62</td>
+              <td>-</td>
+              <td>2.24%</td>
+              <td style="text-decoration: underline;">-0.18</td>
+              <td style="text-decoration: underline;">3.93</td>
+              <td>1.375</td>
+            </tr>
+            <tr>
+              <td>ARDiT†</td>
+              <td>0.56</td>
+              <td>-</td>
+              <td>2.38%</td>
+              <td>-0.22</td>
+              <td>3.70</td>
+              <td>1.061</td>
+            </tr>
+            <tr>
+                <td>StyleTTS 2</td>
+                <td>0.38</td>
+                <td>-</td>
+                <td>2.49%</td>
+                <td>-0.26</td>
+                <td>3.31</td>
+                <td><strong>0.045</strong></td>
+            </tr>
+            <tr>
+                <td>HierSpeech++</td>
+                <td>0.51</td>
+                <td>-</td>
+                <td>6.33%</td>
+                <td>-0.37</td>
+                <td>3.58</td>
+                <td><strong>0.047</strong></td>
+            </tr>
+            <tr>
+                <td>S-DiT</td>
+                <td><strong>0.67</strong></td>
+                <td><strong>0.70</strong></td>
+                <td><strong>1.84%</strong></td>
+                <td><strong>0.00</strong></td>
+                <td><strong>3.94<strong></td>
+                <td style="text-decoration: underline;">0.085</td>
+            </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <div class="content">
+            <p>
+              We list the speech examples on the LibriSpeech benchmark here.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="" style="overflow-x: auto; text-align: start;">
+        <table class="table is-four-fifths" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center" width="80%"><strong>Target Text</strong></th>
+              <th align="center" width="30%"><strong>Prompt</strong></th>
+              <th align="center" width="30%"><strong>S-DiT</strong></th>
+              <th align="center" width="30%"><strong>NaturalSpeech 3</strong></th>
+              <th align="center" width="30%"><strong>VoiceBox</strong></th>
+              <th align="center" width="30%"><strong>CosyVoice</strong></th>
+              <th align="center" width="30%"><strong>ARDiT</strong></th>
+              <th align="center" width="30%"><strong>StyleTTS 2</strong></th>
+              <th align="center" width="30%"><strong>HierSpeech++</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>His death in this conjuncture was a public misfortune.</p></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ref/0.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/s_dit/0.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ns3/0.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/voicebox/0.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/cosyvoice/0.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ardit_dmd_b1/0.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/styletts2/0.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/hierspeechpp/0.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>For if he's anywhere on the farm, we can send for him in a minute.</p></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ref/7.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/s_dit/7.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ns3/7.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/voicebox/7.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/cosyvoice/7.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ardit_dmd_b1/7.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/styletts2/7.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/hierspeechpp/7.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>John Wesley Combash, Jacob Taylor, and Thomas Edward Skinner.</p></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ref/2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/s_dit/2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ns3/2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/voicebox/2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/cosyvoice/2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ardit_dmd_b1/2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/styletts2/2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/hierspeechpp/2.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>The strong position held by the Edison system under the strenuous competition that was already springing up was enormously improved by the introduction of the three wire system and it gave an immediate impetus to incandescent lighting.</p></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ref/4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/s_dit/4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ns3/4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/voicebox/4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/cosyvoice/4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/ardit_dmd_b1/4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/styletts2/4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/zero_shot_TTS/hierspeechpp/4.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <div class="content">
+            <small>* please scroll horizontally to see more samples.</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<section class="hero teaser is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Accent Intensity Control</h2>
+          <div class="content">
+            <p>
+              Note that CTA-TTS only support to generate standard English and English with a Chinese accent (Chinglish).
+              <br/> The target text is "Unconsciously, our yells and exclamations yielded to this rhythm".
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="" style="overflow-x: auto; text-align: start;">
+        <table class="table is-four-fifths" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center" width="20%"><strong>Accent Types</strong></th>
+              <th align="center" width="20%"><strong>Prompt</strong></th>
+              <th align="center" width="20%"><strong>S-DiT (Accented)</strong></th>
+              <th align="center" width="20%"><strong>S-DiT (Standard)</strong></th>
+              <th align="center" width="20%"><strong>CTA-TTS (Accented)</strong></th>
+              <th align="center" width="20%"><strong>CTA-TTS (Standard)</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:500px; min-width:500px;"><p>Mandarin</p></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/cmp_prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/sdit_0.9.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/sdit_0.1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/cta_tts_0.9.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/cta_tts_0.1.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:500px; min-width:500px;"><p>Vietnamese</p></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/more/vietnamese_prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/more/vietnamese_accented.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/more/vietnamese_standard.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;">-</td>
+              <td style="text-align: center;">-</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:100px; min-width:100px;"><p>Hindi</p></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/more/hindi_prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/more/hindi_accented.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/accented_TTS/more/hindi_standard.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;">-</td>
+              <td style="text-align: center;">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      
+      
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Incredible Improvement Brought by Scaling.</h2>
+          <div class="content">
+            <p>
+              We compare <u>S-DiT-0.5B</u> with <u>S-DiT-1.5B</u> here. Both models are trained on the 600kh internal datasets.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="overflow-x: auto; text-align: center;">
+        <table class="table column is-four-fifths" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Capabilities</strong></th>
+              <th align="center"><strong>Target Text</strong></th>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>S-DiT-0.5B</strong></th>
+              <th align="center"><strong>S-DiT-1.5B</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Paralinguistic</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>老夫人疑惑，“娇娇，你今儿是怎么了？”平日里，她的娇娇儿和萧弈的关系也没这么好……</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/audiobook_prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/audiobook_zh_small.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/audiobook_zh_xl.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Expressiveness</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>Ultimate innovation and exceptional design, they lead the modern life styles and creating countless legends, this is, the Apple Inc.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/english_broadcast_prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/english_broadcast_small.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/english_broadcast_xl.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+
+
+<section class="hero teaser is-small">
+  <div class="hero-body">
+    <div class="container">
+      
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Duration Control</h2>
+          <div class="content">
+            <p>
+              We only adjust the speed rate for "about both the size of the peri" for phoneme-level duration control.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="overflow-x: auto; text-align: center;">
+        <table class="table column is-four-fifths" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center" ><strong>Control Type</strong></th>
+              <th align="center"><strong>Target Text</strong></th>
+              <th align="center" ><strong>Speed = 0.9</strong></th>
+              <th align="center" ><strong>Speed = 1.0</strong></th>
+              <th align="center" ><strong>Speed = 1.1</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Sentence-Level</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>Notably, raising questions about both the size of the perimeter and efforts to sweep and secure.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/dur_control/speed=0.9.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/dur_control/speed=1.0.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/dur_control/speed=1.1.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Phoneme-Level</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>Notably, raising questions about both the size of the perimeter and efforts to sweep and secure.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/dur_control/local_speed=0.9.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/dur_control/local_speed=1.0.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/dur_control/local_speed=1.1.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      
+      
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Robustness</h2>
+          <div class="content">
+            <p>
+              First prompt is derived from <a href="https://maskgct.github.io/" style="color: #0d6efd;">MaskGCT</a>'s demo page. Second prompt is derived from <a href="https://giantailab.github.io/bailingtts_tech_report/index.html#mandarin_0_shot" style="color: #0d6efd;">Bailing-TTS</a>'s demo page.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="overflow-x: auto; text-align: center;">
+        <div class="column is-four-fifths content">
+        <table class="table" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Speaker</strong></th>
+              <th align="center"><strong>Target Text</strong></th>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>S-DiT (0.5B)</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Trump</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>She sells sea shells by the seashore. The shells she sells are surely seashells.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/robustness/robustness_prompt_trump.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/robustness/robustness_trump.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Child example from Bailing-TTS</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>针蓝线蓝领子蓝，蓝针蓝线蓝领蓝。蓝针蓝线连蓝领，针蓝线蓝领子蓝。</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/robustness/robustness_prompt_child.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/robustness/robustness_child.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+
+
+<section class="hero teaser is-small">
+  <div class="hero-body">
+    <div class="container">
+      
+      
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Code-Switched Generation</h2>
+          <div class="content">
+            <p>
+              The first to second prompts are derived from the public LibriSpeech dataset. </br> The third prompt is derived from online videos and the fourth prompt is derived from <a href="https://maskgct.github.io/" style="color: #0d6efd;">Seed-TTS</a>'s demo page.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="overflow-x: auto; text-align: center;">
+        <div class="column is-four-fifths content">
+        <table class="table" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Speaker</strong></th>
+              <th align="center"><strong>Target Text</strong></th>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>S-DiT (0.5B)</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Spk 1 from LibriSpeech</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>你昨天的performance真是outstanding，完全展示了你的skills。</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_prompt_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_1.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Spk 2 from LibriSpeech</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>我觉得我们需要一个更clear的strategy来实现我们的goals。</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_prompt_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_2.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>容嚒嚒 (Meme Rong)</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>这次旅行的schedule有点tight，我们需要plan得更efficient一些。</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_prompt_3.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_3.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Elon Musk</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>他今天的mood看起来不太好，可能需要一些space。</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_prompt_4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_4.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>丁真 (Zhen Ding)</p></td>
+              <td style="text-align: left; vertical-align:middle; width:400px; min-width:400px;"><p>在这big城市，充满着layers的层次，时间仿佛freeze停滞，我只想回到Snow Leopard身边再来一次！</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_prompt_5.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_5.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser is-light is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Attention Matrices Visualization</h2>
+          <div class="content" style="text-align: left;">
+            <p>
+              We visualize the attention matrices from S-DiT model and observe: 
+            </p>
+            <ul>
+              <li>The function of each layer stays consistent across different timesteps; </li>
+              <li>The layers can be categorized into three types: 
+                <ul>
+                  <li>
+                    The bottom layers handle text and audio feature extraction; 
+                  </li>
+                  <li>
+                    The middle layers focus on speech-text alignment;
+                  </li>
+                  <li>
+                    The top layers refine the target latent features.
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column  is-four-fifths" style="overflow-x: auto; text-align: center; ">
+          <img src="./static/images/layer8_diff_timestep.png" class="interpolation-image"/>
+          <p>(a) The bottom layers</p>
+          <img src="./static/images/layer16_diff_timestep.png" class="interpolation-image"/>
+          <p>(b) The middle layers</p>
+          <img src="./static/images/layer27_diff_timestep.png" class="interpolation-image"/>
+          <p>(c) The top layers</p>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      
+      
+     
+
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+
+        <h2 class="title is-3">Ethics Statement</h2>
+        <div class="content">
+          <p>
+            The proposed model, S-DiT, is designed to advance zero-shot TTS technologies, making it easier for users to generate personalized speech. When used responsibly and legally, this technique can enhance applications such as movies, games, podcasts, and various other services, contributing to increasing convenience in everyday life. However, we acknowledge the potential risks of misuse, such as voice cloning for malicious purposes. To mitigate this risk, solutions like building a corresponding deepfake detection model will be considered. Additionally, we plan to incorporate watermarks and verification methods for synthetic audio to ensure ethical use in real-world applications. Restrictions will also be included in the licensing of our project to further prevent misuse. By addressing these ethical concerns, we aim to contribute to the development of responsible and beneficial AI technologies, while remaining conscious of the potential risks and societal impact.
+          </p>
+        </div>
+
+        <h2 class="title is-3">Licenses</h2>
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
