@@ -207,7 +207,7 @@
             <tr>
               <th align="center" width="80%"><strong>Target Text</strong></th>
               <th align="center" width="30%"><strong>Prompt</strong></th>
-              <th align="center" width="30%"><strong>S-DiT</strong></th>
+              <th align="center" width="30%"><strong>S-DiT (0.5B)</strong></th>
               <th align="center" width="30%"><strong>NaturalSpeech 3</strong></th>
               <th align="center" width="30%"><strong>VoiceBox</strong></th>
               <th align="center" width="30%"><strong>CosyVoice</strong></th>
@@ -289,6 +289,7 @@
             <p>
               Note that CTA-TTS only support to generate standard English and English with a Chinese accent (Chinglish).
               <br/> The target text is "Unconsciously, our yells and exclamations yielded to this rhythm".
+              <br/> We use S-DiT (0.5B) in this study.
             </p>
           </div>
         </div>
@@ -350,7 +351,7 @@
           <h2 class="title is-3">Incredible Improvement Brought by Scaling.</h2>
           <div class="content">
             <p>
-              We compare <u>S-DiT-0.5B</u> with <u>S-DiT-1.5B</u> here. Both models are trained on the 600kh internal datasets.
+              We compare <u>S-DiT (0.5B)</u> with <u>S-DiT (1.5B)</u> and <u>S-DiT (7.0B)</u> here. Both models are trained on the 600kh internal datasets.
             </p>
           </div>
         </div>
@@ -363,8 +364,9 @@
               <th align="center"><strong>Capabilities</strong></th>
               <th align="center"><strong>Target Text</strong></th>
               <th align="center"><strong>Prompt</strong></th>
-              <th align="center"><strong>S-DiT-0.5B</strong></th>
-              <th align="center"><strong>S-DiT-1.5B</strong></th>
+              <th align="center"><strong>S-DiT (0.5B)</strong></th>
+              <th align="center"><strong>S-DiT (1.5B)</strong></th>
+              <th align="center"><strong>S-DiT (7.0B)</strong></th>
             </tr>
           </thead>
           <tbody>
@@ -374,6 +376,7 @@
               <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/audiobook_prompt.wav" type="audio/wav"></audio></td>
               <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/audiobook_zh_small.wav" type="audio/wav"></audio></td>
               <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/audiobook_zh_xl.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/audiobook_zh_7B.wav" type="audio/wav"></audio></td>
             </tr>
             <tr>
               <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Expressiveness</p></td>
@@ -381,6 +384,7 @@
               <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/english_broadcast_prompt.wav" type="audio/wav"></audio></td>
               <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/english_broadcast_small.wav" type="audio/wav"></audio></td>
               <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/english_broadcast_xl.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/scaling/english_broadcast_7B.wav" type="audio/wav"></audio></td>
             </tr>
           </tbody>
         </table>
@@ -403,6 +407,7 @@
           <div class="content">
             <p>
               We only adjust the speed rate for "about both the size of the peri" for phoneme-level duration control.
+              <br/> We use S-DiT (0.5B) in this study.
             </p>
           </div>
         </div>
@@ -610,16 +615,497 @@
 </section>
 
 
-<section class="hero teaser is-light is-small">
+<section class="hero teaser  is-small">
   <div class="hero-body">
-    <div class="container">
-      
-      
-     
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Rebuttal: Examples of Potential Failure Cases</h2>
+          <div class="content" style="text-align: left;">
+            <p>
+              We investigate the following 4 cases: </br> 
+              &nbsp; &nbsp; 1) we only choose the left/right boundary frame as the anchor of sparse alignment; </br> 
+              &nbsp; &nbsp; 2) we add significant gaussian noises to the predicted duration value </br> 
+              &nbsp; &nbsp; &nbsp; &nbsp; (to simulate a poorly performing duration predictor); </br> 
+              &nbsp; &nbsp; 3) extremely long or short phoneme durations; </br> 
+              &nbsp; &nbsp; 4) long text inputs. </br> 
+              And we have the following conclusions for ours with sparse alignment: </br> 
+              &nbsp; &nbsp; 1) it is robust to poorly-chosen anchors; </br> 
+              &nbsp; &nbsp; 2) it is more robust to noisy duration; </br> 
+              &nbsp; &nbsp; 3) it is robust against extremely long or short phoneme durations; </br> 
+              &nbsp; &nbsp; 4) it can generate speeches with long text inputs.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="text-align: center;">
+        <div class="column is-four-fifths content">
+        <table class="table" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Setting</strong></th>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>Ours w/ Sparse Alignment</strong></th>
+              <th align="center"><strong>Ours w/ Forced Alignment</strong></th>
+              <th align="center"><strong>Ours w/o Alignments</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Case 1</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_1_sparse.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"> - </td>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"> - </td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Case 2</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_2_sparse.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_2_forced.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"> - </td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Case 3 - Short</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_3_sparse.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_3_forced.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_3_no_align.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Case 3 - Long</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_3_sparse_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_3_forced_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_3_no_align_2.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Case 4</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/prompt.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_4_sparse.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_4_forced.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec1/case_4_no_align.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
 
     </div>
   </div>
 </section>
+
+
+<section class="hero teaser  is-small">
+  <div class="hero-body">
+    <div class="container">
+      
+      
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Rebuttal: Code-Switched Generation with Different CFG</h2>
+          <div class="content">
+            <p>
+              Here we compare the results of multi-condition CFG, standard CFG, and w/o CFG for code-switched generation. </br>
+              Multi-condition CFG uses 2.0 text guidance scale and 3.5 speaker guidance scale; Standard CFG uses a guidance scale of 2.5.  </br>
+              All three settings uses the same S-DiT (0.5B) model.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="overflow-x: auto; text-align: center;">
+        <div class="column is-four-fifths content">
+        <table class="table" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Speaker</strong></th>
+              <th align="center"><strong>Target Text</strong></th>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>Multi-Condition CFG</strong></th>
+              <th align="center"><strong>Strandard CFG</strong></th>
+              <th align="center"><strong>w/o CFG</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Spk 1 from LibriSpeech</p></td>
+              <td style="text-align: left; vertical-align:middle; width:250px; min-width:250px;"><p>你昨天的performance真是outstanding，完全展示了你的skills。</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/code_switch_prompt_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/standard_cfg_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/wo_cfg_1.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Spk 2 from LibriSpeech</p></td>
+              <td style="text-align: left; vertical-align:middle; width:250px; min-width:250px;"><p>我觉得我们需要一个更clear的strategy来实现我们的goals。</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_prompt_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/standard_cfg_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/wo_cfg_2.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>容嚒嚒 (Meme Rong)</p></td>
+              <td style="text-align: left; vertical-align:middle; width:250px; min-width:250px;"><p>这次旅行的schedule有点tight，我们需要plan得更efficient一些。</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_prompt_3.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_3.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/standard_cfg_3.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/wo_cfg_3.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>Elon Musk</p></td>
+              <td style="text-align: left; vertical-align:middle; width:250px; min-width:250px;"><p>他今天的mood看起来不太好，可能需要一些space。</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_prompt_4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/standard_cfg_4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/wo_cfg_4.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; vertical-align:middle; width:150px; min-width:150px;"><p>丁真 (Zhen Ding)</p></td>
+              <td style="text-align: left; vertical-align:middle; width:250px; min-width:250px;"><p>在这big城市，充满着layers的层次，时间仿佛freeze停滞，我只想回到Snow Leopard身边再来一次！</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_prompt_5.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/code_switch/code_switch_5.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/standard_cfg_5.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec2/wo_cfg_5.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser  is-small">
+  <div class="hero-body">
+    <div class="container">
+      
+      
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Rebuttal: Robustness to Long Sequences against Other AR Models</h2>
+          <div class="content">
+            <p>
+              The target text is: </br>
+              In recent years, large scale language models and diffusion models have brought considerable advancements to the field of speech synthesis. Unlike traditional text to speech systems, these models are trained on large scale, multi domain speech corpora, which contributes to notable improvements in the naturalness and expressiveness of synthesized audio. Given only seconds of speech prompt, these models can synthesize identity preserving speech in a zero shot manner.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="overflow-x: auto; text-align: center;">
+        <div class="column is-four-fifths content">
+        <table class="table" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>S-DiT (0.5B)</strong></th>
+              <th align="center"><strong>VoiceCraft</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec3/prompt_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec3/sdit_longform_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec3/voicecraft_longform_1.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec3/prompt_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec3/sdit_longform_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec3/voicecraft_longform_2.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
+
+
+<section class="hero teaser  is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Rebuttal: Methods of Providing Rough Alignment</h2>
+          <div class="content" style="text-align: left;">
+            <p>
+              We investigate the following 3 cases in inference: </br> 
+              &nbsp; &nbsp; 1) we uniformly sample the frame from the corresponding phoneme region as the anchor of sparse alignment;</br> 
+              &nbsp; &nbsp; 2) we directly use the middle frame as the anchor; </br> 
+              &nbsp; &nbsp; 3) we only choose the left/right boundary frame as the anchor; </br> 
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="text-align: center;">
+        <div class="column is-four-fifths content">
+        <table class="table" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>Case 1</strong></th>
+              <th align="center"><strong>Case 2</strong></th>
+              <th align="center"><strong>Case 3</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec4/prompt_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec4/uniform_random_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec4/middle_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec4/left_right_1.wav" type="audio/wav"></audio></td>
+            </tr>
+            <tr>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec4/prompt_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec4/uniform_random_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec4/middle_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec4/left_right_2.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="hero teaser  is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Rebuttal: Advantages of Sparse Alignment in Terms of Expressiveness</h2>
+          <div class="content" style="text-align: left;">
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="text-align: center;">
+        <div class="column is-four-fifths content">
+        <p>
+          Over-smoothed durations would lead to flat prosody and limit the expressiveness of speech. 
+        </br>However, sparse alignment is less likely to be constrained by a bad duration predictor.
+        </p>
+        <table class="table" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>S-DiT (0.5B)</strong></th>
+              <th align="center"><strong>VoiceBox</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec6/2_ref.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec6/2_sdit.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec6/2_voicebox.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="text-align: center;">
+        <div class="column is-four-fifths content">
+        <p>
+          Occasionally unreasonable duration predictions result in the baseline's pronunciation of "and" being almost muted, while S-DiT is free from this issue.
+        </p>
+        <table class="table" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>S-DiT (0.5B)</strong></th>
+              <th align="center"><strong>NaturalSpeech 3</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec6/1_ref.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec6/1_sdit.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec6/1_ns3.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="text-align: center;">
+        <div class="column is-four-fifths content">
+        <p>
+        When we add significant gaussian noises to the predicted duration value, 
+        </br> S-DiT w/ Forced Alignment shows significant degradation.
+        </p>
+        <table class="table" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center"><strong>Prompt</strong></th>
+              <th align="center"><strong>S-DiT (0.5B)</strong></th>
+              <th align="center"><strong>S-DiT (0.5B) w/ Forced Alignment</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec6/3_ref.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec6/3_sdit.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec6/3_sdit_forced_align.wav" type="audio/wav"></audio></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered" style="text-align: center;">
+        <div class="column is-four-fifths content">
+        <p>
+        Compared to models based on forced alignments, 
+        </br>our S-DiT's expressiveness is less likely to be limited by the predefined duration.
+        </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<section class="hero teaser  is-small">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <h2 class="title is-3">Rebuttal: Comparisons with NaturalSpeech 3</h2>
+          <div class="content" style="text-align: left;">
+          </div>
+        </div>
+      </div>
+
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <div class="content" style="text-align: left;">
+            <p>
+              To make our claim (the performance of S-DiT is close to that of NaturalSpeech 3) more convincing, we conducted another round of random generation, and this time, these four samples achieved the following SIM-O scores.
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="columns is-centered has-text-centered" style="text-align: left; overflow-x: auto;">
+        <div class="column is-four-fifths content">
+        
+        <table class="table is-four-fifths" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center" width="80%"><strong>Target Text</strong></th>
+              <th align="center" width="30%"><strong>Prompt</strong></th>
+              <th align="center" width="30%"><strong>S-DiT (0.5B)</strong></th>
+              <th align="center" width="30%"><strong>NaturalSpeech 3</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>His death in this conjuncture was a public misfortune.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/ref_4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/sdit_4+0.7735.wav" type="audio/wav"></audio><p>Sim-O: 0.7735</p></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/ns3_4.wav" type="audio/wav"></audio><p>Sim-O: 0.7577</p></td>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>For if he's anywhere on the farm, we can send for him in a minute.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/ref_3.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/sdit_3+0.8265.wav" type="audio/wav"></audio><p>Sim-O: 0.8265</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/ns3_3.wav" type="audio/wav"></audio><p>Sim-O: 0.6905</p></td>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>John Wesley Combash, Jacob Taylor, and Thomas Edward Skinner.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/ref_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/sdit_2+0.7745.wav" type="audio/wav"></audio><p>Sim-O: 0.7745</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/ns3_2.wav" type="audio/wav"></audio><p>Sim-O:0.7662</p></td>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>The strong position held by the Edison system under the strenuous competition that was already springing up was enormously improved by the introduction of the three wire system and it gave an immediate impetus to incandescent lighting.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/ref_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/sdit_1+0.8014.wav" type="audio/wav"></audio><p>Sim-O: 0.8014</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec7/ns3_1.wav" type="audio/wav"></audio><p>Sim-O: 0.8103</p></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+      
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths" style="margin-top: 15px;">
+          <div class="content" style="text-align: left;">
+            <p>
+              We also provide more examples here to make our experiments more convincing. 
+            </p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="columns is-centered has-text-centered" style="text-align: left; overflow-x: auto;">
+        <div class="column is-four-fifths content">
+        
+        <table class="table is-four-fifths" style="background-color: transparent;">
+          <thead>
+            <tr>
+              <th align="center" width="80%"><strong>Target Text</strong></th>
+              <th align="center" width="30%"><strong>Prompt</strong></th>
+              <th align="center" width="30%"><strong>S-DiT (0.5B)</strong></th>
+              <th align="center" width="30%"><strong>NaturalSpeech 3</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>All the furniture belonged to other times.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/ref_1.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/sdit_1_0.6032.wav" type="audio/wav"></audio><p>Sim-O: 0.6032</p></td>
+              <td style="text-align: center;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/ns3_1_0.6030.wav" type="audio/wav"></audio><p>Sim-O: 0.6030</p></td>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>The two young men, who were by this time full of the adventure, went down to the Wall Street office of Henry's uncle and had a talk with that Wily operator.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/ref_2.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/sdit_2_0.6796.wav" type="audio/wav"></audio><p>Sim-O: 0.6796</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/ns3_2_0.6271.wav" type="audio/wav"></audio><p>Sim-O: 0.6271</p></td>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>Not all the Galatians had become perverted.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/ref_3.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/sdit_3_0.6775.wav" type="audio/wav"></audio><p>Sim-O: 0.6775</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/ns3_3_0.6130.wav" type="audio/wav"></audio><p>Sim-O:0.6130</p></td>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align:middle; width:500px; min-width:500px;"><p>I had always known him to be restless in his manner, but on this particular occasion he was in such a state of uncontrollable agitation that it was clear something very unusual had occurred.</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/ref_4.wav" type="audio/wav"></audio></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/sdit_4_0.6711.wav" type="audio/wav"></audio><p>Sim-O: 0.6711</p></td>
+              <td style="text-align: center; width:150px; min-width:150px;"><audio controls="" ><source src="static/audio_sample/rebuttal/sec8/ns3_4_0.6907.wav" type="audio/wav"></audio><p>Sim-O: 0.6907</p></td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</section>
+
 
 
 <footer class="footer">
